@@ -11,7 +11,7 @@
 
 export INPDECK="cmi.xml"
 export OUTFILE="gamera.out"
-export MAP="~/Work/maps/Quad2Hirez.h5"
+export MAP="/glade/u/home/skareem/Work/maps/Quad2Hirez.h5"
 export STUB="Sep2017_mhd_2017-09-0"
 #Optional stuff to load an environment
 source ~/.bashrc
@@ -24,5 +24,5 @@ module list
 echo "Running on host `hostname` on `date`"
 echo "Job ID $PBS_ARRAY_INDEX"
 echo "Working on files ${STUB}${PBS_ARRAY_INDEX}T*.hdf"
-lfm2cart.py $MAP ${STUB}${PBS_ARRAY_INDEX}T*.hdf > interp.${PBS_ARRAY_INDEX}.out
+omplace -nt $OMP_NUM_THREADS lfm2cart.py $MAP ${STUB}${PBS_ARRAY_INDEX}T*.hdf > interp.${PBS_ARRAY_INDEX}.out
 echo "Finished run on `date`"
