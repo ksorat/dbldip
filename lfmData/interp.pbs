@@ -1,0 +1,28 @@
+#!/bin/bash
+#Example Gamera PBS script
+#PBS -A UJHB0010
+#PBS -N interp
+#PBS -j oe
+#PBS -J 7-8
+#PBS -q regular
+#PBS -l walltime=12:00:00
+### Use two threads for each of the 36 CPUs
+#PBS -l select=1:ncpus=72:ompthreads=72
+
+export INPDECK="cmi.xml"
+export OUTFILE="gamera.out"
+export MAP="~/Work/maps/Quad2Hirez.h5"
+export STUB="Sep2017_mhd_2017-09-0"
+#Optional stuff to load an environment
+source ~/.bashrc
+module restore interp
+setomp 72
+export OMP_STACKSIZE=64M
+echo $OMP_NUM_THREADS
+module list
+
+echo "Running on host `hostname` on `date`"
+echo "Job ID $PBS_ARRAY_INDEX"
+echo "Working on files ${STUB}${PBS_ARRAY_INDEX}T*.hdf"
+lfm2cart.py $MAP ${STUB}${PBS_ARRAY_INDEX}T*.hdf
+echo "Finished run on `date`"
